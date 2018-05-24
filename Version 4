@@ -1,0 +1,197 @@
+float x=60; //placement initiale obstacle rect bas
+float k=740; //placement initiale obstacle rect haut
+float y=0; //placement initaile de l'obstacle carré de gauche
+float z=540; //placement initial de l'obstacle carré de droite
+
+
+float h=480; //ordonné du carré
+float d=60; //abscisse du carré
+
+
+float vitesse=5;//vitesse des obstacles rectangles
+float vitessebis=5; //rectangle du haut
+
+float vitesse1=5; //carré de gauche
+float vitesse1bis=5;
+
+
+boolean runonce = false;
+boolean runonce2 = false;
+boolean runonce3 = false;
+boolean runonce4 = false; //vrai/faux qui sert à faire tourner une seule fois la fonction
+//déclaration des variables
+
+void setup(){
+size(1000,600);
+}
+//l'arrière plan + dimensions 
+
+void draw(){
+  background(255, 255, 255);
+  
+  dessinerObstacle();    
+  dessinerObstaclebis();
+  dessinerCarre(); 
+  
+  mouvementObstacle();
+  mouvementObstaclebis();
+  mouvement();
+  
+  //collision();
+  
+  score();
+  
+  timer();
+  
+  drawFuel();
+  pickupFuel();
+  
+ 
+}
+
+void dessinerCarre(){
+  fill(226, 120, 27);
+  noStroke();
+  rect(d,h,60,60); //carré contrôlé par le clic souris
+}
+
+void dessinerObstacle(){
+  fill(0);
+  rect(x,400,200,60); //obstacle rectangle du bas
+  fill(0);
+  rect(k,100,200,60); //obstacle rectangle du haut
+  fill(0);
+}
+
+void dessinerObstaclebis(){
+  fill(0);
+  rect(0,y,60,60);  //obsatcle carré de gauche
+  fill(0);
+  rect(940,z,60,60);
+}
+
+
+void mouvementObstacle(){
+  x=x+vitesse;
+  if(x<60|| x>740){
+    vitesse=-vitesse;
+  }
+  
+  k=k+vitessebis;
+  if(k<60 || k>740){
+    vitessebis=-vitessebis;
+  }
+}
+
+
+void mouvementObstaclebis(){
+  y=y+vitesse1;
+  if(y<0 || y>543){
+    vitesse1=-vitesse1;
+  }
+  
+  z=z+vitesse1bis;
+  if(z<0 || z>553){
+    vitesse1bis=-vitesse1bis;
+  }
+}
+
+
+void mouvement(){
+  if (keyPressed==true){ 
+    runonce = false; //empêche de refaire l'action
+  } 
+  if (keyPressed==true && keyCode==UP && !runonce && h > 0){ /*!runonce veut dire runonce == false*/
+    h=h-10; //monter
+    runonce = true; //empêche de refaire l'action
+  } 
+  if (keyPressed==true){ 
+    runonce2 = false; //empêche de refaire l'action
+  } 
+  if (keyPressed==true && keyCode==RIGHT && !runonce && d+60 < 1000){ /*!runonce veut dire runonce == false*/
+    d=d+10; //droite
+    runonce2 = true; //empêche de refaire l'action
+  } 
+  if (keyPressed==true){ 
+    runonce3 = false; //empêche de refaire l'action
+  } 
+  if (keyPressed==true && keyCode==DOWN && !runonce && h+65 < 600){ /*!runonce veut dire runonce == false*/
+    h=h+10; //descendre
+    runonce3 = true; //empêche de refaire l'action
+  } 
+  if (keyPressed==true){ 
+    runonce4 = false; //empêche de refaire l'action
+  } 
+  if (keyPressed==true && keyCode==LEFT && !runonce && d > 0){ /*!runonce veut dire runonce == false*/
+    d=d-10; //gauche
+    runonce4 = true; //empêche de refaire l'action
+  } 
+}
+
+//void collision(){
+//    if (d<=x+200 && d>=x-60 && h<=460 && h>=340){
+//      textSize(25);
+//      text("PERDU",470,300); //rectangle bas
+//      noLoop();
+//    }
+    
+//    if(d<=k+200 && d>=k-60 && h<=160 && h>=50){ //rectangle du haut
+//      textSize(25);
+//      text("PERDU",470,300);
+//      noLoop();
+//    }
+//}
+
+
+void score(){
+  stroke(225);
+  textSize(15);
+  text("SCORE : ",10, 12);
+}
+
+void timer(){
+  int m;
+  m=(10-(millis()/1000));
+   
+    
+  stroke(225);
+  textSize(15);
+  text("TEMPS RESTANT : "+m,10,25);
+}
+
+boolean A = true;
+boolean B = true;
+boolean C = true;
+boolean D = true;
+boolean E = true;
+
+
+void drawFuel(){
+  if (A==true){
+  ellipse(500,500,30,30); //fuel A bas/millieu
+  };
+  
+  if (B==true){
+  ellipse (930,300,30,30); //fuel B droite
+  };
+  
+  if (C==true){
+  ellipse (500,300,30,30); //fuel C milieu
+  };
+  
+  if (D==true){
+  ellipse(500,60,30,30); //fuel D haut/millieu 
+  };
+  
+  if (E==true){
+  ellipse(60,300,30,30); //fuel E gauche
+  };
+  
+}
+
+void pickupFuel(){
+  if (d+50>=500 && d>=500+15 && h+50>=500 && h<=500+15){
+    textSize(60);
+    text("tvv",345,345);
+}
+}
