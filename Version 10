@@ -1,0 +1,384 @@
+float x=60; //placement initiale obstacle rect bas
+float k=740; //placement initiale obstacle rect haut
+float y=0; //placement initaile de l'obstacle carré de gauche
+float z=540; //placement initial de l'obstacle carré de droite
+
+
+float h=480; //ordonné du carré
+float d=60; //abscisse du carré
+
+
+float vitesse;//vitesse des obstacles rectangles
+float vitessebis; //rectangle du haut
+
+float vitesse1; //carré de gauche
+float vitesse1bis;
+
+
+boolean runonce = false;
+boolean runonce2 = false;
+boolean runonce3 = false;
+boolean runonce4 = false; //vrai/faux qui sert à faire tourner une seule fois la fonction
+//déclaration des variables
+
+
+void setup(){
+size(1000,600);
+
+}
+//l'arrière plan + dimensions 
+
+
+boolean GameStarting = false;
+
+void draw(){ 
+  background(255);
+  
+  
+  HomeScreen();
+  
+  level1();
+  level2();
+  level3();
+  
+  
+  if(GameStarting == true){
+  background(255, 255, 255);
+  
+  dessinerObstacle();    
+  dessinerObstaclebis();
+  dessinerCarre(); 
+  
+  mouvementObstacle();
+  mouvementObstaclebis();
+  mouvement();
+  
+  collision();
+  
+  score();
+  
+  
+  drawFuel();
+  pickupFuel();
+  
+  win();
+  }
+}
+
+void HomeScreen(){
+  fill(225);
+  strokeWeight(10);
+  rect(300,160,400,260);
+  
+  fill(0);
+  textSize(100);
+  text("START",350,320);
+  textSize(40);
+  text("RANDOM",410,400);
+  
+  if(mouseX>300 && mouseX<300+400 && mouseY>160 && mouseY<160+260 && mousePressed==true){
+    GameStarting = true;
+    
+    vitesse=(random(40));//vitesse des obstacles rectangles
+    vitessebis=-(random(40)); //rectangle du haut
+ 
+    vitesse1=(random(40)); //carré de gauche
+    vitesse1bis=-(random(40));
+  }
+}
+
+void level1(){
+  fill(225);
+  strokeWeight(4);
+  rect(250,450,100,80);
+  
+  fill(0);
+  textSize(25);
+  text("LEVEL 1", 255, 500);
+  
+  if (mouseX>250 && mouseX<250+100 && mouseY>450 && mouseY<450+80 && mousePressed==true){
+    vitesse=5;//vitesse des obstacles rectangles
+    vitessebis=-5; //rectangle du haut
+ 
+    vitesse1=5; //carré de gauche
+    vitesse1bis=-5;
+    
+    GameStarting=true;
+  }
+}
+
+void level2(){
+  fill(225);
+  strokeWeight(4);
+  rect(450,450,100,80);
+  
+  fill(0);
+  textSize(25);
+  text("LEVEL 2", 455, 500);
+  
+  if (mouseX>450 && mouseX<450+100 && mouseY>450 && mouseY<450+80 & mousePressed==true){
+    vitesse=10;//vitesse des obstacles rectangles
+    vitessebis=-10; //rectangle du haut
+ 
+    vitesse1=10; //carré de gauche
+    vitesse1bis=-10;
+    
+    GameStarting=true;
+  }
+}
+
+void level3(){
+  fill(225);
+  strokeWeight(4);
+  rect(650,450,100,80);
+  
+  fill(0);
+  textSize(25);
+  text("LEVEL 3", 655, 500);
+  
+  if(mouseX>650&& mouseX<650+100 && mouseY>450 && mouseY<450+80 && mousePressed==true){
+    vitesse=20;//vitesse des obstacles rectangles
+    vitessebis=-20; //rectangle du haut
+ 
+    vitesse1=20; //carré de gauche
+    vitesse1bis=-20;
+    
+    GameStarting=true;
+  }
+}
+
+
+
+
+
+
+void dessinerCarre(){
+  fill(226,126,27);
+  noStroke();
+  rect(d,h,60,60); //carré contrôlé par le clic souris
+}
+
+void dessinerObstacle(){
+  fill(0);
+  rect(x,400,200,60); //obstacle rectangle du bas
+  fill(0);
+  rect(k,100,200,60); //obstacle rectangle du haut
+  fill(0);
+}
+
+void dessinerObstaclebis(){
+  fill(0);
+  rect(0,y,60,60);  //obsatcle carré de gauche
+  fill(0);
+  rect(940,z,60,60);
+}
+
+
+void mouvementObstacle(){
+  x=x+vitesse;
+  if(x<60|| x>740){
+    vitesse=-vitesse;
+  }
+  
+  k=k+vitessebis;
+  if(k<60 || k>740){
+    vitessebis=-vitessebis;
+  }
+}
+
+
+void mouvementObstaclebis(){
+  y=y+vitesse1;
+  if(y<0 || y>543){
+    vitesse1=-vitesse1;
+  }
+  
+  z=z+vitesse1bis;
+  if(z<0 || z>553){
+    vitesse1bis=-vitesse1bis;
+  }
+}
+
+int fastSquare = 5;
+
+void mouvement(){
+  if (keyPressed==true){ 
+    runonce = false; //empêche de refaire l'action
+  } 
+  if (keyPressed==true && keyCode==UP && !runonce && h > 0){ /*!runonce veut dire runonce == false*/
+    h=h-fastSquare; //monter
+    runonce = true; //empêche de refaire l'action
+  } 
+  if (keyPressed==true){ 
+    runonce2 = false; //empêche de refaire l'action
+  } 
+  if (keyPressed==true && keyCode==RIGHT && !runonce && d+60 < 1000){ /*!runonce veut dire runonce == false*/
+    d=d+fastSquare; //droite
+    runonce2 = true; //empêche de refaire l'action
+  } 
+  if (keyPressed==true){ 
+    runonce3 = false; //empêche de refaire l'action
+  } 
+  if (keyPressed==true && keyCode==DOWN && !runonce && h+65 < 600){ /*!runonce veut dire runonce == false*/
+    h=h+fastSquare; //descendre
+    runonce3 = true; //empêche de refaire l'action
+  } 
+  if (keyPressed==true){ 
+    runonce4 = false; //empêche de refaire l'action
+  } 
+  if (keyPressed==true && keyCode==LEFT && !runonce && d > 0){ /*!runonce veut dire runonce == false*/
+    d=d-fastSquare; //gauche
+    runonce4 = true; //empêche de refaire l'action
+  } 
+}
+
+void collision(){
+  if(d+60>=x && d<=x+200 && h+60>=400 && h<=400+60){
+    textSize(60);
+    text("GAME OVER",350,250);
+    noLoop();
+  }
+  
+  if(d+60>k && d<k+200 && h+60>100 && h<100+60){
+    textSize(60);
+    text("GAME OVER",350,250);
+    noLoop();
+}
+
+  if(d+60>0 && d<0+60 && h+60>y && h<y+60){
+    textSize(60);
+    text("GAME OVER",350,250);
+    noLoop();
+}
+  
+  if(d+60>940 && d<940+60 && h+60>y && h<y+60){
+    textSize(60);
+    text("GAME OVER",350,250);
+    noLoop();
+  }
+}
+
+
+int Sc = 0;
+
+void score(){
+  stroke(225);
+  textSize(15);
+  text("SCORE : " + Sc ,10, 12);
+}
+  
+  
+boolean A = true;
+boolean B = true;
+boolean C = true;
+boolean D = true;
+boolean E = true;
+
+float xA = random(50,1000-50);
+float yA = random(50,600-50);
+
+float xB = random(50,1000-50);
+float yB = random(50,600-50);
+
+float xC = random(50,1000-50);
+float yC = random(50,600-50);
+
+
+float xD =random(50,1000-50);
+float yD = random(50,600-50);
+
+float xE = random(50,1000-50);
+float yE = random(50,600-50);
+
+
+void drawFuel(){
+  if (A==true){
+  ellipse(xA,yA,20,20); //fuel A bas/millieu
+  };
+  
+  if (B==true){
+  ellipse (xB,yB,20,20); //fuel B droite
+  };
+  
+  if (C==true){
+  ellipse (xC,yC,20,20); //fuel C milieu
+  };
+  
+  if (D==true){
+  ellipse(xD,yD,20,20); //fuel D haut/millieu 
+  };
+  
+  if (E==true){
+  ellipse(xE,yE,20,20); //fuel E gauche
+  };
+  
+}
+
+boolean onlyonceA = false;
+boolean onlyonceB = false;
+boolean onlyonceC = false;
+boolean onlyonceD = false;
+boolean onlyonceE = false;
+
+void pickupFuel(){
+    if (d+60>xA-10 && d<xA+10 && h+60>yA-10 && h<yA+10 && !onlyonceA){
+      A = false; 
+      Sc = Sc + 1;
+      onlyonceA = true;
+      xA = random(60,1000-60);
+      yA = random(60,600-60);
+      A = true; 
+      onlyonceA = false;
+
+    }
+
+    if (d+50>xB-10 && d<xB+10 && h+60>yB-10 && h<yB+10 && !onlyonceB){
+      B = false;
+      Sc = Sc + 1;
+      onlyonceB = true;
+      xB = random(60,1000-60);
+      yB = random(60,600-60);
+      B = true;
+      onlyonceB = false;
+    }
+    
+
+    if (d>xC-15 && d<xC+15 && h+60>yC && h<yC+15 && !onlyonceC){
+      C = false;
+      Sc = Sc + 1;
+      onlyonceC = true;
+      xC = random(60,1000-60);
+      yC = random(60,600-60);
+      C = true;
+      onlyonceC = false;
+    }
+    
+    if (d+15>xD-15 && d<xD+15 && h+60>yD && h<yD+15 && !onlyonceD){
+      D = false;
+      Sc = Sc + 1;
+      onlyonceD = true;
+      xD =random(60,1000-60);
+      yD = random(60,600-60);
+      D = true;
+      onlyonceD = false;
+    }
+    
+    if (d+15>xE-15 && d<xE+15 && h+60>yE && h<yE+15 && !onlyonceE){
+      E = false;
+      Sc = Sc + 1;
+      onlyonceE = true;
+      xE = random(60,1000-60);
+      yE = random(60,600-60);
+      E = true;
+      onlyonceE = false;
+
+    }
+}
+
+void win(){
+  if(Sc>=5){
+    textSize(60);
+    noLoop();
+    text("YOU WIN",350,250);
+  }
+}
