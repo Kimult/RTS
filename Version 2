@@ -1,0 +1,192 @@
+float x=60; //placement initiale obstacle rect bas
+float k=740; //placement initiale obstacle rect haut
+
+float y=0; //placement initaile de l'obstacle carré de gauche
+float z=540; //placement initial de l'obstacle carré de droite
+
+float h=270; //ordonné initiale du carré
+float d=450; //abscisse initiale du carré
+
+
+float vitesse=5;//vitesse des obstacles rectangles
+float vitessebis=5; //rectangle du haut
+
+float vitesse1=5; //carré de gauche
+float vitesse1bis=5;
+
+
+boolean runonce = false;
+boolean runonce2 = false;
+boolean runonce3 = false;
+boolean runonce4 = false; //vrai/faux qui sert à faire tourner une seule fois la fonction
+//déclaration des variables
+
+void setup(){
+  size(1000,600);
+}
+
+
+//l'arrière plan + dimensions 
+
+void draw(){
+  background(255, 255, 255);
+  
+  dessinerObstacle();
+  dessinerObstaclebis();
+  
+  dessinerCarre(); 
+  
+  mouvementObstacle();
+  mouvementObstaclebis();
+  mouvement();
+  
+  collision();
+  
+  score();
+  
+  
+  timer();
+ 
+ 
+}
+
+void dessinerCarre(){
+  fill(226, 120, 27);
+  noStroke();
+  rect(d,h,60,60); //carré contrôlé par le clic souris
+}
+
+void dessinerObstacle(){
+  fill(0);
+  rect(x,400,200,60); //obstacle rectangle du bas
+  fill(0);
+  rect(k,100,200,60); //obstacle rectangle du haut
+  fill(0);
+}
+
+void dessinerObstaclebis(){
+  fill(0);
+  rect(0,y,60,60);  //obsatcle carré de gauche
+  fill(0);
+  rect(940,z,60,60);
+}
+
+
+void mouvementObstacle(){
+  x=x+vitesse;
+  if(x<60|| x>740){
+    vitesse=-vitesse;
+  }
+  
+  k=k+vitessebis;
+  if(k<60 || k>740){
+    vitessebis=-vitessebis;
+  }
+}
+
+
+void mouvementObstaclebis(){
+  y=y+vitesse1;
+  if(y<0 || y>543){
+    vitesse1=-vitesse1;
+  }
+  
+  z=z+vitesse1bis;
+  if(z<0 || z>553){
+    vitesse1bis=-vitesse1bis;
+  }
+}
+
+
+float vitesseCarre=10;
+
+void mouvement(){
+  if (keyPressed==true){ 
+    runonce = false; //empêche de refaire l'action
+  } 
+  if (keyPressed==true && keyCode==UP && !runonce && h > 0){ /*!runonce veut dire runonce == false*/
+    h=h-vitesseCarre; //monter
+    runonce = true; //empêche de refaire l'action
+  } 
+  if (keyPressed==true){ 
+    runonce2 = false; //empêche de refaire l'action
+  } 
+  if (keyPressed==true && keyCode==RIGHT && !runonce && d+60 < 1000){ /*!runonce veut dire runonce == false*/
+    d=d+vitesseCarre; //droite
+    runonce2 = true; //empêche de refaire l'action
+  } 
+  if (keyPressed==true){ 
+    runonce3 = false; //empêche de refaire l'action
+  } 
+  if (keyPressed==true && keyCode==DOWN && !runonce && h+65 < 600){ /*!runonce veut dire runonce == false*/
+    h=h+vitesseCarre; //descendre
+    runonce3 = true; //empêche de refaire l'action
+  } 
+  if (keyPressed==true){ 
+    runonce4 = false; //empêche de refaire l'action
+  } 
+  if (keyPressed==true && keyCode==LEFT && !runonce && d > 0){ /*!runonce veut dire runonce == false*/
+    d=d-vitesseCarre; //gauche
+    runonce4 = true; //empêche de refaire l'action
+  } 
+}
+
+void collision(){
+    if (d<=x+200 && d>=x-60 && h<=460 && h>=340){
+    vitesseCarre=0; //tous les éléments s'arrêtent à l'écran
+    vitesse=0;
+    vitessebis=0; 
+    vitesse1=0; 
+    vitesse1bis=0;
+    
+    textSize(50);
+    fill(#FF0000);
+    text("Ah... Dommage" ,300,300);
+    
+
+    }
+    
+    if(d<=k+200 && d>=k-60 && h<=160 && h>=50){ //rectangle du haut
+    vitesseCarre=0; //tous les éléments s'arrêtent à l'écran
+    vitesse=0;
+    vitessebis=0; 
+    vitesse1=0; 
+    vitesse1bis=0;
+   
+    
+    textSize(50);
+    fill(#FF0000);
+    text("Ah... Dommage" ,300,300);
+    
+    }
+}
+
+int m;
+int intervalle=45;
+
+
+void timer (){
+   m=intervalle-(millis()/1000);
+ if(m<=0){
+   noLoop();
+   textSize(50);
+   fill(#FF0000);
+   text("Ah... Dommage" ,300,300);
+ }
+    
+   
+ textSize(15);
+ fill(0);
+ text("TEMPS RESTANT : "+m,10,30);
+}
+
+  
+
+ 
+  
+void score(){
+  textSize(15);
+  stroke(225);
+  fill(0);
+  text("SCORE : ",10,12);
+}
